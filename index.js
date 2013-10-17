@@ -26,20 +26,32 @@
         smtpTransport.close();
       });
     }
+    else {
+      console.log(result);
+    }
   };
 
-  http
-      .get(config.options, function (response) {
-             var result = '';
-             response.on('data', function (chunk) {
-               result += chunk;
-             });
-             response.on('end', function () {
-               onStatusResponse(result);
-             });
-           })
-      .on("error", function (e) {
-            console.log("Got error: " + e.message);
-          });
+  var interval = config.interval;
+  var statusRequestTask = function () {
+    http
+        .get(config.options, function (response) {
+               var result = '';
+               response.on('data', function (chunk) {
+                 result += chunk;
+               });
+               response.on('end', function () {
+                 onStatusResponse(result);
+               });
+               setTimeout(statusRequestTask, interval);
+             })
+        .on("error", function (e) {
+              console.log("Got error: " + e.message);
+              setTimeout(statusRequestTask, interval);
+            });
+  };
+
+  statusRequestTask();
+  console.log("starting monitor with interval (s) " + (interval / 1000));
+  setTimeout(statusRequestTask, interval);
 
 })();
