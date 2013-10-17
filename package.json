@@ -1,0 +1,15 @@
+{
+  "name": "topicpro-monitor",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gesellix/topicpro-monitor.git"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "nodemailer": "~0.5.3"
+  }
+}
